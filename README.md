@@ -1,43 +1,60 @@
-🧠 Jobnest — AI-Powered Job Matching Platform
+<h1>🧠 Jobnest — AI-Powered Job Matching Platform</h1>
 Jobnest is a modern web application designed to streamline the recruitment process for both applicants and companies. It provides intelligent resume matching, role-based dashboards, and real-time job management — powered by Laravel, Vue 3, and Supabase.
 
-🚀 Features
-👤 Applicant
-Upload, view, and delete your resume (PDF)
+<h2>🚀 Features</h2>
+<h3>👤 Applicant</h3>
+<li>Upload, view, and delete your resume (PDF)</li>
+<li>Search and apply for job posts</li>
+<li>Track application status</li>
+<li>Use AI module to analyze your resume and get job match suggestions</li>    
 
-Search and apply for job posts
+<h3>🏢 Company</h3>
+<li>Post, edit, and delete job listings</li>
+<li>View applicant submissions</li>
+<li>Approve or reject applications</li>
+<li>Access filtered applicants based on keyword match</li>
 
-Track application status
+<br>
 
-Use AI module to analyze your resume and get job match suggestions
-
-🏢 Company
-Post, edit, and delete job listings
-
-View applicant submissions
-
-Approve or reject applications
-
-Access filtered applicants based on keyword match
-
-⚙️ Global
-Role-based authentication (Laravel Sanctum)
-
-RESTful API backend
-
-Dockerized deployment for Render or Vercel
-
-Resume analysis via future GPT-based AI module (Python)
-
-🛠️ Tech Stack
-Layer	Tech
-Frontend	Vue 3, Vite, Tailwind CSS
-Backend	Laravel 10 (PHP), Sanctum
-Database	Supabase (PostgreSQL)
-DevOps	Docker, Render (optional)
-AI (future)	Python (OpenAI GPT-4)
-
-📦 Installation (Local)
+<h2>⚙️ Global</h2>
+<li>Role-based authentication (Laravel Sanctum)</li>
+<li>RESTful API backend</li>
+<li>Dockerized deployment for Render or Vercel</li>
+<li>Resume analysis via future GPT-based AI module (Python)</li>
+<br>
+<h2>🛠️ Tech Stack</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Tech</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Frontend</td>
+      <td>Vue 3, Vite, Tailwind CSS</td>
+    </tr>
+    <tr>
+      <td>Backend</td>
+      <td>Laravel 10 (PHP), Sanctum</td>
+    </tr>
+    <tr>
+      <td>Database</td>
+      <td>Supabase (PostgreSQL)</td>
+    </tr>
+    <tr>
+      <td>DevOps</td>
+      <td>Docker, Render (optional)</td>
+    </tr>
+    <tr>
+      <td>AI (future)</td>
+      <td>Python (OpenAI GPT-4)</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>📦 Installation (Local)</h2>
 Requirements:
 PHP 8.1+
 
