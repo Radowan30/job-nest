@@ -31,12 +31,12 @@ Route::middleware('auth:sanctum')->group(function () {
          ->middleware('role:applicant')->name('applications.index');
      // Applicant applies to a job
      Route::post('/applications', [ApplicationController::class, 'store'])
-     ->middleware(['auth:sanctum', 'role:applicant'])
+     ->middleware( 'role:applicant')
      ->name('applications.store');
 
      // Company approves/rejects an application
      Route::put('/applications/{application}', [ApplicationController::class, 'update'])
-     ->middleware(['auth:sanctum', 'role:company'])
+     ->middleware( 'role:company')
      ->name('applications.update');
 
     // Applications page per job (company)
