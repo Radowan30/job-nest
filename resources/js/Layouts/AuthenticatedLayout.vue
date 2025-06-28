@@ -1,8 +1,11 @@
 <script setup>
+import { useForm } from '@inertiajs/vue3'
 import { Link, usePage } from '@inertiajs/vue3'
 import ApplicationLogo from '@/Components/ApplicationLogo.vue'
 
 const user = usePage().props.auth.user
+const logoutForm = useForm({})
+const logout = () => logoutForm.post(route('logout'))
 </script>
 
 <template>
@@ -39,8 +42,15 @@ const user = usePage().props.auth.user
         </h1>
         <div class="text-sm text-gray-600">
           Logged in as: <strong>{{ user.name }}</strong>
-          <form method="POST" :action="route('logout')" class="inline ml-2">
-            <button type="submit" class="text-red-500 hover:underline">Logout</button>
+          <form @submit.prevent="logout" class="inline ml-2">
+            <button
+              type="submit"
+              class="text-red-500 hover:underline"
+              :disabled="logoutForm.processing"
+            >
+              <span v-if="logoutForm.processing">Logging out...</span>
+              <span v-else>Logout</span>
+            </button>
           </form>
         </div>
       </header>
