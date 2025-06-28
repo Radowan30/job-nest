@@ -12,6 +12,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    role: '',
 });
 
 const submit = () => {
@@ -91,6 +92,23 @@ const submit = () => {
                     class="mt-2"
                     :message="form.errors.password_confirmation"
                 />
+            </div>
+            
+            <div class="mt-4">
+                <InputLabel for="role" value="Role" />
+
+                <select
+                    id="role"
+                    v-model="form.role"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                >
+                    <option disabled value="">Select Role</option>
+                    <option value="applicant">Applicant</option>
+                    <option value="company">Company</option>
+                </select>
+
+                <InputError class="mt-2" :message="form.errors.role" />
             </div>
 
             <div class="mt-4 flex items-center justify-end">
