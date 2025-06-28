@@ -14,7 +14,7 @@ class CreateResumesTable extends Migration
             $table->string('file_path');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
     public function down()

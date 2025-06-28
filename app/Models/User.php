@@ -17,10 +17,7 @@ class User extends Authenticatable
     // Casts
     protected $casts = ['email_verified_at' => 'datetime'];
 
-    protected $primaryKey = 'user_id';
-    public $incrementing = true;
-    protected $keyType = 'int';
-    
+
     // Role check helpers
     public function isApplicant() { return $this->role === 'applicant'; }
     public function isCompany()   { return $this->role === 'company'; }

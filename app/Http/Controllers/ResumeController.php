@@ -25,19 +25,21 @@ class ResumeController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'resume' => 'required|mimes:pdf,doc,docx|max:2048',
-        ]);
+{
+    $request->validate([
+        'resume' => 'required|mimes:pdf,doc,docx|max:2048',
+    ]);
 
-        $path = $request->file('resume')->store('resumes', 'public');
+    $path = $request->file('resume')->store('resumes', 'public');
 
-        $user = Auth::user();
-        $user->resume_path = $path;
-        $user->save();
+    $user = Auth::user();
+    $user->resume_path = $path;
+    $user->save();
 
-        return redirect()->route('resume.upload')->with('success', 'Resume uploaded.');
-    }
+    return redirect()->route('resume.upload')
+                     ->with('success', 'Resume uploaded.')
+                     ->with('filePath', $path);
+}
 
     public function show()
     {

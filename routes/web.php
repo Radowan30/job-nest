@@ -25,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/jobs/{job}', [\App\Http\Controllers\JobController::class, 'show'])->name('jobs.show');
     Route::get('/jobs/{job}/edit', [\App\Http\Controllers\JobController::class, 'edit'])
          ->middleware('role:company')->name('jobs.edit');
+    Route::post('/jobs', [\App\Http\Controllers\JobController::class, 'store'])
+     ->middleware('auth:sanctum','role:company')
+     ->name('jobs.store');
 
     // Applications page (applicant)
     Route::get('/applications', [ApplicationController::class, 'index'])
@@ -48,6 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
          ->middleware('role:applicant')->name('resume.upload');
     Route::get('/resume/analyze', [\App\Http\Controllers\ResumeController::class, 'analyzeForm'])
          ->middleware('role:applicant')->name('resume.analyze');
+     
+     // Handle the upload
+     Route::post('/resume/upload', [\App\Http\Controllers\ResumeController::class, 'store'])
+     ->middleware('role:applicant')
+     ->name('resume.upload.store');
 });
 
 
