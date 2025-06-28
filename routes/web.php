@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+    ]);
 });
 
 // Protect all app routes with Sanctum auth
@@ -36,7 +39,10 @@ Route::middleware('auth:sanctum')->group(function () {
          ->middleware('role:applicant')->name('resume.analyze');
 });
 
-// Fallback route for SPA (optional)
-Route::get('/{any}', function () {
-    return Inertia::render('Welcome');
-})->where('any', '.*');
+
+require __DIR__.'/auth.php';
+
+//   Fallback route for SPA (optional)
+//   Route::get('/{any}', function () {
+//      return Inertia::render('Welcome');
+//   })->where('any', '.*');
