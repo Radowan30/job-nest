@@ -15,7 +15,7 @@ class CreateJobsTable extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('company_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
     public function down()
