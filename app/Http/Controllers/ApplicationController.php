@@ -1,5 +1,5 @@
 <?php
-// app/Http/Controllers/ApplicationController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\Application;
@@ -7,48 +7,63 @@ use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ApplicationController extends Controller
 {
-    // Inertia page for applicant to view own applications
+    use AuthorizesRequests;
+    // Applicant: submit a new application
+    public function store(Request $request)
+    {
+        $request->validate([
+            'job_id' => 'required|exists:jobs,id',
+        ]);
+
+        Application::firstOrCreate(
+            ['user_id' => Auth::id(), 'job_id' => $request->job_id],
+            ['status' => 'pending']
+        );
+
+        return redirect()->back()->with('success', 'Applied successfully.');
+    }
+
+    // Company: approve or reject
+    public function update(Request $request, Application $application)
+    {
+        $this->authorize('view', $application->job); // ensure company owns the job
+
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        $application->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Application updated.');
+    }
+
+    // Applicant dashboard
     public function index()
     {
-        return Inertia::render('Applications/Index');
+        $applications = Application::with('job:id,title')
+            ->where('user_id', Auth::id())
+            ->get();
+
+        return Inertia::render('Applications/Index', [
+            'applications' => $applications,
+        ]);
     }
 
-    // Inertia page for company to view applications for a job
+    // Company view per job
     public function indexByJob(Job $job)
     {
-        // Only company that owns job can view its applications
-        if (Auth::id() !== $job->company_id) {
-            abort(403);
-        }
-        return Inertia::render('Applications/Index', ['jobId' => $job->id]);
-    }
+        $this->authorize('viewApplications', $job);
 
-    // API: applicant applies to a job
-    public function apiStore(Request $request)
-    {
-        $request->validate(['job_id' => 'required|exists:jobs,id']);
-        $application = Application::firstOrCreate([
-            'user_id' => Auth::id(),
-            'job_id'  => $request->job_id,
-        ], ['status' => 'pending']);
-        return response()->json($application, 201);
-    }
+        $applications = $job->applications()->with('user:id,name')->get();
 
-    // API: get current user's applications (applicant)
-    public function apiIndex()
-    {
-        return Application::with('job')->where('user_id', Auth::id())->get();
-    }
-
-    // API: get applications for a given job (company)
-    public function apiIndexByJob(Job $job)
-    {
-        if (Auth::id() !== $job->company_id) {
-            abort(403);
-        }
-        return $job->applications()->with('user:id,name')->get();
+        return Inertia::render('Applications/Index', [
+            'applications' => $applications,
+            'jobId' => $job->id,
+            'jobTitle' => $job->title,
+        ]);
     }
 }

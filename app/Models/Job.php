@@ -8,9 +8,10 @@ class Job extends Model
 {
     protected $fillable = ['title','description','company_id'];
 
-    public function company()
+     public function company()
     {
-        return $this->belongsTo(User::class, 'company_id');
+        // company_id → User.user_id
+        return $this->belongsTo(User::class, 'company_id', 'user_id');
     }
     public function applications()
     {

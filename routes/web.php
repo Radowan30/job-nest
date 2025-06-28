@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ApplicationController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -25,11 +27,20 @@ Route::middleware('auth:sanctum')->group(function () {
          ->middleware('role:company')->name('jobs.edit');
 
     // Applications page (applicant)
-    Route::get('/applications', [\App\Http\Controllers\ApplicationController::class, 'index'])
+    Route::get('/applications', [ApplicationController::class, 'index'])
          ->middleware('role:applicant')->name('applications.index');
+     // Applicant applies to a job
+     Route::post('/applications', [ApplicationController::class, 'store'])
+     ->middleware(['auth:sanctum', 'role:applicant'])
+     ->name('applications.store');
+
+     // Company approves/rejects an application
+     Route::put('/applications/{application}', [ApplicationController::class, 'update'])
+     ->middleware(['auth:sanctum', 'role:company'])
+     ->name('applications.update');
 
     // Applications page per job (company)
-    Route::get('/jobs/{job}/applications', [\App\Http\Controllers\ApplicationController::class, 'indexByJob'])
+    Route::get('/jobs/{job}/applications', [ApplicationController::class, 'indexByJob'])
          ->middleware('role:company')->name('jobs.applications');
 
     // Resume pages

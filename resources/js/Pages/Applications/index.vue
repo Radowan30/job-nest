@@ -1,64 +1,45 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { usePage } from '@inertiajs/vue3';
-import axios from 'axios';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { Head, useForm, usePage } from '@inertiajs/vue3'
 
-const props = usePage().props.value;
-const auth = props.auth;
-const jobId = props.jobId || null;
+const { applications, auth, jobId, jobTitle } = usePage().props
 
-const applications = ref([]);
-const error = ref(null);
-const loading = ref(true);
-
-onMounted(async () => {
-  try {
-    if (auth.user.role === 'applicant') {
-      const res = await axios.get('/api/applications');
-      applications.value = res.data;
-    } else if (auth.user.role === 'company' && jobId) {
-      const res = await axios.get(`/api/jobs/${jobId}/applications`);
-      applications.value = res.data;
-    }
-  } catch (err) {
-    error.value = 'Could not load applications.';
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-});
+function updateStatus(appId, status) {
+  const form = useForm({ status })
+  form.put(route('applications.update', appId))
+}
 </script>
 
 <template>
-  <AuthenticatedLayout>
-    <div class="max-w-4xl mx-auto py-10">
-      <h1 class="text-2xl font-bold mb-4">Applications</h1>
+  <Head title="Applications" />
 
-      <div v-if="loading">Loading...</div>
-      <div v-else-if="error" class="text-red-600">{{ error }}</div>
-      <div v-else>
-        <!-- Applicant view -->
+  <AuthenticatedLayout>
+    <template #header>
+      <h2 class="text-xl font-semibold">
+        {{ jobId ? `Applications for ${jobTitle}` : 'My Applications' }}
+      </h2>
+    </template>
+
+    <div class="py-6 px-4 space-y-4">
+      <div v-for="app in applications" :key="app.id" class="border p-4 rounded">
         <div v-if="auth.user.role === 'applicant'">
-          <div v-if="applications.length">
-            <div v-for="app in applications" :key="app.id" class="mb-4 p-4 border rounded">
-              <p class="font-semibold">Job: {{ app.job.title }}</p>
-              <p>Status: {{ app.status }}</p>
-            </div>
-          </div>
-          <p v-else>No applications found.</p>
+          <p>Job: {{ app.job.title }}</p>
+          <p>Status: {{ app.status }}</p>
         </div>
 
-        <!-- Company view -->
-        <div v-if="auth.user.role === 'company' && jobId">
-          <h2 class="text-xl font-semibold mb-2">Applications for Job ID: {{ jobId }}</h2>
-          <div v-if="applications.length">
-            <div v-for="app in applications" :key="app.id" class="mb-4 p-4 border rounded">
-              <p class="font-semibold">Applicant: {{ app.user.name }}</p>
-              <p>Status: {{ app.status }}</p>
-            </div>
-          </div>
-          <p v-else>No applications found for this job.</p>
+        <div v-else-if="auth.user.role === 'company'">
+          <p>Applicant: {{ app.user.name }}</p>
+          <p>Status: {{ app.status }}</p>
+          <button
+            v-if="app.status === 'pending'"
+            @click="updateStatus(app.id, 'approved')"
+            class="bg-green-500 text-white px-3 py-1 rounded mr-2"
+          >Approve</button>
+          <button
+            v-if="app.status === 'pending'"
+            @click="updateStatus(app.id, 'rejected')"
+            class="bg-red-500 text-white px-3 py-1 rounded"
+          >Reject</button>
         </div>
       </div>
     </div>

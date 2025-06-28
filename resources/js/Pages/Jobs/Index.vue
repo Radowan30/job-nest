@@ -1,20 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { usePage, Link, Head } from '@inertiajs/vue3'
+import { usePage, Head, Link } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import axios from 'axios'
 
+const props = defineProps({ jobs: Array })
 const auth = usePage().props.auth
-const jobs = ref([])
-
-onMounted(async () => {
-  try {
-    const res = await axios.get('/api/jobs')
-    jobs.value = res.data
-  } catch (err) {
-    console.error('Error fetching jobs:', err)
-  }
-})
 </script>
 
 <template>

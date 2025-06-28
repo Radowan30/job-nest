@@ -1,5 +1,5 @@
 <?php
-// app/Http/Controllers/JobController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\Job;
@@ -7,65 +7,78 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-
 class JobController extends Controller
 {
     use \Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-    // Inertia pages (web routes)
+
+    // Show all jobs
     public function index()
     {
-        return Inertia::render('Jobs/Index');
+        $jobs = Job::with('company:id,name')->latest()->get();
+        return Inertia::render('Jobs/Index', [
+            'jobs' => $jobs,
+        ]);
     }
+
+    // Show create job form
     public function create()
     {
         return Inertia::render('Jobs/Create');
     }
-    public function edit(Job $job)
+
+    // Store new job
+    public function store(Request $request)
     {
-        // Only company that owns job can edit
-        $this->authorize('update', $job);
-        return Inertia::render('Jobs/Edit', ['jobId' => $job->id]);
-    }
-    public function show(Job $job)
-    {
-        return Inertia::render('Jobs/Show', ['jobId' => $job->id]);
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $data['company_id'] = Auth::id();
+        Job::create($data);
+
+        return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
     }
 
-    // API endpoints (JSON)
-    public function apiIndex()
+    // Show job detail
+    public function show(Job $job)
     {
-        // List all jobs
-        return Job::with('company:id,name')->get();
-    }
-    public function apiShow(Job $job)
-    {
-        return $job->load('company:id,name');
-    }
-    public function apiStore(Request $request)
-    {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'nullable|string',
+        $job->load('company:id,name');
+        return Inertia::render('Jobs/Show', [
+            'job' => $job,
         ]);
-        $data['company_id'] = Auth::id();
-        $job = Job::create($data);
-        return response()->json($job, 201);
     }
-    public function apiUpdate(Request $request, Job $job)
+
+    // Show edit form
+    public function edit(Job $job)
     {
         $this->authorize('update', $job);
+        return Inertia::render('Jobs/Edit', [
+            'job' => $job,
+        ]);
+    }
+
+    // Update job
+    public function update(Request $request, Job $job)
+    {
+        $this->authorize('update', $job);
+
         $data = $request->validate([
-            'title' => 'required|string',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
+
         $job->update($data);
-        return response()->json($job);
+
+        return redirect()->route('jobs.show', $job)->with('success', 'Job updated successfully.');
     }
-    public function apiDelete(Job $job)
+
+    // Delete job
+    public function destroy(Job $job)
     {
         $this->authorize('delete', $job);
         $job->delete();
-        return response()->noContent();
+
+        return redirect()->route('jobs.index')->with('success', 'Job deleted.');
     }
 }
-

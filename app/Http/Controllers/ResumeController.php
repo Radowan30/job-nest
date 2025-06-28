@@ -1,8 +1,7 @@
 <?php
-// app/Http/Controllers/ResumeController.php
+
 namespace App\Http\Controllers;
 
-use App\Models\Resume;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -10,32 +9,42 @@ use Inertia\Inertia;
 
 class ResumeController extends Controller
 {
-    // Inertia page to upload/view resume
     public function uploadForm()
     {
-        return Inertia::render('Resume/Upload');
+        $user = Auth::user();
+        $filePath = $user->resume_path;
+
+        return Inertia::render('Resume/Upload', [
+            'filePath' => $filePath,
+        ]);
     }
+
     public function analyzeForm()
     {
         return Inertia::render('Resume/Analyze');
     }
 
-    // API: store uploaded resume file
-    public function apiStore(Request $request)
+    public function store(Request $request)
     {
-        $request->validate(['resume' => 'required|file|mimes:pdf,doc,docx']);
-        $path = $request->file('resume')->store('resumes');
-        $resume = Resume::updateOrCreate(
-            ['user_id' => Auth::id()],
-            ['file_path' => $path]
-        );
-        return response()->json(['file_path' => $path], 201);
+        $request->validate([
+            'resume' => 'required|mimes:pdf,doc,docx|max:2048',
+        ]);
+
+        $path = $request->file('resume')->store('resumes', 'public');
+
+        $user = Auth::user();
+        $user->resume_path = $path;
+        $user->save();
+
+        return redirect()->route('resume.upload')->with('success', 'Resume uploaded.');
     }
 
-    // API: get current user's resume info
-    public function apiShow()
+    public function show()
     {
-        $resume = Auth::user()->resume;
-        return $resume ? ['file_path' => $resume->file_path] : ['file_path' => null];
+        $user = Auth::user();
+
+        return Inertia::render('Resume/Upload', [
+            'filePath' => $user->resume_path,
+        ]);
     }
 }

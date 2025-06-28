@@ -12,9 +12,9 @@ class Application extends Model
     protected $attributes = ['status' => 'pending'];
 
     public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+{
+    return $this->belongsTo(User::class, 'user_id', 'user_id');
+}
     public function job()
     {
         return $this->belongsTo(Job::class);
