@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class ResumeController extends Controller
 {
@@ -21,25 +22,27 @@ class ResumeController extends Controller
 
     public function analyzeForm()
     {
-        return Inertia::render('Resume/Analyze');
+        $resume = DB::table('resumes')->where('user_id', Auth::id())->first();
+        return Inertia::render('Resume/Analyze', [
+            'resume' => $resume
+        ]);
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'resume' => 'required|mimes:pdf,doc,docx|max:2048',
-    ]);
+    {
+        $request->validate([
+            'resume_text' => 'required|string',
+        ]);
 
-    $path = $request->file('resume')->store('resumes', 'public');
+        $resumeText = preg_replace('/\s+/', ' ', $request->resume_text);
 
-    $user = Auth::user();
-    $user->resume_path = $path;
-    $user->save();
+        DB::table('resumes')->updateOrInsert(
+            ['user_id' => Auth::id()],
+            ['resume_text' => $resumeText]
+        );
 
-    return redirect()->route('resume.upload')
-                     ->with('success', 'Resume uploaded.')
-                     ->with('filePath', $path);
-}
+        return back()->with('message', 'Resume saved!');
+    }
 
     public function show()
     {

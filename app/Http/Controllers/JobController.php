@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
@@ -29,15 +31,33 @@ class JobController extends Controller
     // Store new job
     public function store(Request $request)
     {
-        $data = $request->validate([
+        // $data = $request->validate([
+        //     'title' => 'required|string|max:255',
+        //     'description' => 'nullable|string',
+        // ]);
+
+        // $data['company_id'] = Auth::id();
+        // Job::create($data);
+
+        // return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
+        // Validate input
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
         ]);
 
-        $data['company_id'] = Auth::id();
-        Job::create($data);
+        // Save the job and get the ID
+        $job = new Job();
+        $job->title = $validated['title'];
+        $job->description = $validated['description'];
+        $job->company_id = Auth::id();  // or however you store the user/company link
+        $job->save();
 
-        return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
+        // Return the new job ID to the frontend
+        return response()->json([
+            'message' => 'Job created successfully',
+            'job_id' => $job->id,
+        ]);
     }
 
     // Show job detail
@@ -80,5 +100,21 @@ class JobController extends Controller
         $job->delete();
 
         return redirect()->route('jobs.index')->with('success', 'Job deleted.');
+    }
+
+    public function getJobsByIds(Request $request)
+    {
+        $idsParam = $request->query('ids', '');
+        $ids = explode(",", $idsParam);
+
+        // Remove quotes AND trim spaces:
+        $ids = array_map(fn($id) => trim($id, " '\""), $ids);
+
+        $jobs = DB::table('jobs')
+            ->whereIn('id', $ids)
+            ->select('id', 'title', 'description')
+            ->get();
+
+        return response()->json($jobs);
     }
 }

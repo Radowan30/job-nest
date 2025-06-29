@@ -4,6 +4,9 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\ResumeAnalysisController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Models\Job;
 
 Route::middleware('auth:sanctum')->group(function () {
     // Job routes
@@ -24,4 +27,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // AI analysis endpoint (stub)
     Route::post('/analyze-resume', [ResumeAnalysisController::class, 'analyze'])->middleware('role:applicant');
+});
+
+Route::get('/get-jobs', function (Request $request) {
+    $ids = explode(',', $request->query('ids', ''));
+    $jobs = Job::whereIn('id', $ids)->get();
+    return response()->json($jobs);
 });
