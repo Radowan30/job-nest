@@ -49,6 +49,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="username"
+                    style="background-color: #FFF2E0;"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -64,6 +65,7 @@ const submit = () => {
                     v-model="form.password"
                     required
                     autocomplete="current-password"
+                    style="background-color: #FFF2E0;"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
@@ -82,7 +84,8 @@ const submit = () => {
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="rounded-md text-sm text-main underline hover:text-white hover:bg-main focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition px-3 py-1"
+                    style="border: 2px solid #898AC4; background-color: #FFF2E0;"
                 >
                     Forgot your password?
                 </Link>
@@ -91,13 +94,15 @@ const submit = () => {
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    style="background-color: #898AC4; border: 2px solid #898AC4;"
                 >
                     Log in
                 </PrimaryButton>
 
                 <Link
                     :href="route('register')"
-                    class="ms-4 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="ms-4 rounded-md text-sm text-main underline hover:text-white hover:bg-main focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition px-4 py-2"
+                    style="border: 2px solid #898AC4; background-color: #FFF2E0;"
                 >
                     Register
                 </Link>

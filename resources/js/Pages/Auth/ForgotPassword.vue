@@ -40,7 +40,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email" style="color: #898AC4;" />
 
                 <TextInput
                     id="email"
@@ -50,6 +50,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="username"
+                    style="background-color: #FFF2E0;"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -59,6 +60,7 @@ const submit = () => {
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    style="background-color: #898AC4; border: 2px solid #898AC4;"
                 >
                     Email Password Reset Link
                 </PrimaryButton>

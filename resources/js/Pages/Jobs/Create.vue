@@ -25,16 +25,16 @@ function submit() {
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
+      <h2 class="text-xl font-semibold leading-tight" style="color: #898AC4;">
         Create Job
       </h2>
     </template>
 
-    <div class="py-12">
+    <div class="py-12" style="background-color: #FFF2E0;">
       <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <form @submit.prevent="submit" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div class="mb-4">
-            <label for="title" class="block text-gray-700 text-sm font-bold mb-2">
+            <label for="title" class="block text-sm font-bold mb-2" style="color: #898AC4;">
               Title
             </label>
             <input
@@ -42,8 +42,9 @@ function submit() {
               v-model="form.title"
               type="text"
               required
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+              class="shadow appearance-none border border-main rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-main"
               placeholder="Job Title"
+              style="background-color: #FFF2E0;"
             />
             <div v-if="form.errors.title" class="text-red-600 text-sm mt-1">
               {{ form.errors.title }}
@@ -51,14 +52,15 @@ function submit() {
           </div>
 
           <div class="mb-4">
-            <label for="description" class="block text-gray-700 text-sm font-bold mb-2">
+            <label for="description" class="block text-sm font-bold mb-2" style="color: #898AC4;">
               Description
             </label>
             <textarea
               id="description"
               v-model="form.description"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+              class="shadow appearance-none border border-main rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-main"
               placeholder="Job Description"
+              style="background-color: #FFF2E0;"
             ></textarea>
             <div v-if="form.errors.description" class="text-red-600 text-sm mt-1">
               {{ form.errors.description }}
@@ -68,7 +70,7 @@ function submit() {
           <button
             type="submit"
             :disabled="form.processing"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            class="bg-main hover:bg-support text-white font-bold py-2 px-4 rounded transition"
           >
             {{ form.processing ? 'Saving…' : 'Save' }}
           </button>

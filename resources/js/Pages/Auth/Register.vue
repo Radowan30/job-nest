@@ -28,7 +28,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Name" style="color: #898AC4;" />
 
                 <TextInput
                     id="name"
@@ -38,13 +38,14 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
+                    style="background-color: #FFF2E0;"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email" style="color: #898AC4;" />
 
                 <TextInput
                     id="email"
@@ -53,13 +54,14 @@ const submit = () => {
                     v-model="form.email"
                     required
                     autocomplete="username"
+                    style="background-color: #FFF2E0;"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Password" style="color: #898AC4;" />
 
                 <TextInput
                     id="password"
@@ -68,6 +70,7 @@ const submit = () => {
                     v-model="form.password"
                     required
                     autocomplete="new-password"
+                    style="background-color: #FFF2E0;"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
@@ -77,6 +80,7 @@ const submit = () => {
                 <InputLabel
                     for="password_confirmation"
                     value="Confirm Password"
+                    style="color: #898AC4;"
                 />
 
                 <TextInput
@@ -86,6 +90,7 @@ const submit = () => {
                     v-model="form.password_confirmation"
                     required
                     autocomplete="new-password"
+                    style="background-color: #FFF2E0;"
                 />
 
                 <InputError
@@ -95,13 +100,14 @@ const submit = () => {
             </div>
             
             <div class="mt-4">
-                <InputLabel for="role" value="Role" />
+                <InputLabel for="role" value="Role" style="color: #898AC4;" />
 
                 <select
                     id="role"
                     v-model="form.role"
                     required
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    class="mt-1 block w-full rounded-md border-main shadow-sm focus:border-main focus:ring focus:ring-main focus:ring-opacity-50"
+                    style="background-color: #FFF2E0; color: #898AC4;"
                 >
                     <option disabled value="">Select Role</option>
                     <option value="applicant">Applicant</option>
@@ -114,7 +120,8 @@ const submit = () => {
             <div class="mt-4 flex items-center justify-end">
                 <Link
                     :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="rounded-md text-sm text-main underline hover:text-white hover:bg-main focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition px-4 py-2"
+                    style="border: 2px solid #898AC4; background-color: #FFF2E0;"
                 >
                     Already registered?
                 </Link>
@@ -123,6 +130,7 @@ const submit = () => {
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    style="background-color: #898AC4; border: 2px solid #898AC4;"
                 >
                     Register
                 </PrimaryButton>
