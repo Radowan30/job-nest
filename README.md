@@ -48,7 +48,7 @@ Jobnest is a modern web application designed to streamline the recruitment proce
       <td>Docker, Render (optional)</td>
     </tr>
     <tr>
-      <td>AI (future)</td>
+      <td>AI</td>
       <td>Python (OpenAI GPT-4)</td>
     </tr>
   </tbody>
