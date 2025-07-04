@@ -1,6 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -e
+
 echo "🔄 Running migrations..."
 php artisan migrate --force
-echo "🚀 Launching PHP‑FPM & Nginx via supervisord..."
-exec /usr/bin/supervisord -n
+
+echo "🚀 Starting PHP‑FPM & Nginx"
+
