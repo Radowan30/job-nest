@@ -33,13 +33,9 @@ RUN php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache
 
-# Ensure startup script exists and is executable
-USER root
-RUN chmod +x /var/www/html/start.sh \
- && chown www-data:www-data /var/www/html/start.sh
+# Copy startup script into S6's entrypoint directory
+COPY --chmod=755 entrypoint.d/99-migrate.sh /etc/entrypoint.d/
 
 # Expose HTTP default port
 EXPOSE 80
 
-# Run startup script (migrations) and let S6 manage services
-ENTRYPOINT ["/var/www/html/start.sh"]
