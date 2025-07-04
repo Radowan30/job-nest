@@ -37,7 +37,7 @@ Jobnest is a modern web application designed to streamline the recruitment proce
     </tr>
     <tr>
       <td>Backend</td>
-      <td>Laravel 10 (PHP), Sanctum</td>
+      <td>Laravel 12 (PHP), Sanctum</td>
     </tr>
     <tr>
       <td>Database</td>
@@ -48,7 +48,7 @@ Jobnest is a modern web application designed to streamline the recruitment proce
       <td>Docker, Render (optional)</td>
     </tr>
     <tr>
-      <td>AI (future)</td>
+      <td>AI</td>
       <td>Python (OpenAI GPT-4)</td>
     </tr>
   </tbody>
@@ -56,9 +56,9 @@ Jobnest is a modern web application designed to streamline the recruitment proce
 <br>
 <h2>📦 Installation (Local)</h2>
 Requirements:
-PHP 8.1+
-
-Node.js 18+
-
+PHP 8.1+, 
+Node.js 18+, 
 Composer
+<br>
+<b>TO RUN APP: on main branch, run both</b> <code>php artisan serve</code> <b>and</b> <code>npm run dev</code> <b>on seperate shells</b>
 
