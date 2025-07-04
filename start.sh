@@ -2,5 +2,5 @@
 set -e
 echo "🔄 Running migrations..."
 php artisan migrate --force
-echo "🚀 Starting PHP-FPM & Nginx..."
+echo "🚀 Launching PHP‑FPM & Nginx via supervisord..."
 exec /usr/bin/supervisord -n
