@@ -1,34 +1,27 @@
-# Use a modern base with Nginx + PHP-FPM
-FROM dwchiang/nginx-php-fpm:8.2-alpine
+FROM serversideup/php:8.2-fpm-nginx-alpine-v3.0.1
 
-# Copy custom Nginx configuration
+# Copy custom Nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Set working directory
 WORKDIR /var/www/html
-
-# Copy all application files
 COPY . .
 
-# Install PHP dependencies
+# Install Composer & PHP deps
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node dependencies & build Vue (Breeze / Vite)
-RUN apk update && apk add --no-cache nodejs npm \
+# Build Vue assets
+RUN apk add --no-cache nodejs npm \
  && npm ci \
  && npm run build \
  && rm -rf node_modules
 
-# Cache Laravel configuration and views
+# Laravel caches
 RUN php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache
 
-# Ensure start script is executable
+# Make start script runnable
 RUN chmod +x /var/www/html/start.sh
 
-# Expose HTTP port
 EXPOSE 80
-
-# Launch the app
 CMD ["/start.sh"]
