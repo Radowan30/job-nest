@@ -20,7 +20,7 @@ Jobnest is a modern web application designed to streamline the recruitment proce
 <li>Role-based authentication (Laravel Sanctum)</li>
 <li>RESTful API backend</li>
 <li>Dockerized deployment for Render or Vercel</li>
-<li>Resume analysis via future GPT-based AI module (Python)</li>
+<li>Resume analysis via GPT-based AI module (Python)</li>
 <br>
 <h2>🛠️ Tech Stack</h2>
 <table>
