@@ -8,6 +8,7 @@ class CreateJobsTable extends Migration
 {
     public function up()
     {
+        if (!Schema::hasTable('jobs')) {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('company_id');
@@ -17,6 +18,7 @@ class CreateJobsTable extends Migration
 
             $table->foreign('company_id')->references('id')->on('users')->onDelete('cascade');
         });
+        }
     }
     public function down()
     {

@@ -8,6 +8,7 @@ class CreateApplicationsTable extends Migration
 {
     public function up()
     {
+        if (!Schema::hasTable('applications')) {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // applicant
@@ -19,6 +20,7 @@ class CreateApplicationsTable extends Migration
             $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
             $table->unique(['user_id','job_id']); // one application per user/job
         });
+        }
     }
     public function down()
     {

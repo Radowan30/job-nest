@@ -8,6 +8,7 @@ class CreateResumesTable extends Migration
 {
     public function up()
     {
+        if (!Schema::hasTable('applications')) {
         Schema::create('resumes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
@@ -16,6 +17,7 @@ class CreateResumesTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+        }
     }
     public function down()
     {
